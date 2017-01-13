@@ -1,0 +1,116 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html{
+    font-family: arial;
+}
+.header{
+    h1{
+        padding: 30px 0;
+    }
+}
+.row{
+    text-align: center;
+    width: 100%;
+}
+.container{
+    max-width: 600px;
+    margin: 0 auto;
+}
+.clearfix{
+    &:after, &:before {
+      content: '';
+      display: table;
+      clear: both;
+    }
+}
+.slider{
+    width: 100%;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 100px;
+    border-radius: 10px;
+}
+.menu{
+    display: none;
+    position: absolute;
+    text-decoration: none;
+    list-style: none;
+    color: white;
+    z-index: 2;
+    font-size: 26px;
+    width: 30%;
+    li{
+        display: block;
+        float: none;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+}
+
+button{
+    background: none;
+    position: absolute;
+    z-index: 2;
+    border: none;
+    color: white;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
+}
+#prevPicture{
+    left: 0;
+    top:0;
+    bottom:0;
+
+}
+#nextPicture{
+    top:0;
+    bottom:0;
+    right: 0;
+}
+#menuBut{
+    top:0;
+    left:0;
+}
+#autoRight{
+    right: 0;
+    bottom: 0;
+}
+#stopBut{
+    right: 50px;
+    bottom: 0;
+}
+#autoLeft{
+    bottom:0;
+    right: 100px;
+}
+.slides {
+  list-style: none;
+  position: relative;
+  li {
+      float: left;
+      img{
+          display: block;
+          width: 100%;
+      }
+  }
+}
+.textSlides{
+    //display: none;
+    position: absolute;
+    z-index: 1;
+    list-style: none;
+    bottom: 10%;
+    li{
+        z-index: 1;
+        float: left;
+        background-color: rgba(255,255,255, 0.2);
+        //color: white;
+        bottom: 20%;
+    }
+}
+
+.active{
+    color: red;
+}
