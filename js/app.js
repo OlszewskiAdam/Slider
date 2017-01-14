@@ -1,4 +1,4 @@
-$(function(){
+//$(function(){
 
 //Zmienne do html
 
@@ -131,6 +131,15 @@ $(function(){
         slider.height(slideLi.height());
     }
 
+    //ukrycie wszystkich slajdow
+    function allSlideOff(){
+        for (var i = 0; i < slideLi.length; i++){
+            $(slideLi[i]).css("display", "none");
+        }
+        $(slideLi[index]).css("display", "block");
+    }
+
+
 //Dodanie kopi slajdow i opisow zeby mogl sie krecic w kolko;
     function addClone(){
         $(textLi).first().before(lastText);
@@ -255,7 +264,44 @@ $(function(){
         }
     }
 
-    //Przypisanie poruszania gora dol
+
+    //Po jednym slajdzie
+
+    function slideNextDisplay(){
+        $(slideBox).stop();
+        slideBox.animate({
+            left: $(slideLi).width() + 30
+        }, time, function(){
+        $(slideLi[index]).css("display", "none");
+        index++;
+        if(index === slideLi.length){
+            index = 0;
+        }
+        $(slideLi[index]).css("display", "block");
+        });
+        slideBox.animate({
+            left: 0
+        }, time);
+    }
+    function slidePrevDisplay(){
+        $(slideBox).stop();
+        slideBox.animate({
+            left: $(slideLi).width() + 30
+        }, time, function(){
+        $(slideLi[index]).css("display", "none");
+        index--;
+        if(index === -1){
+            index = slideLi.length - 1;
+        }
+        $(slideLi[index]).css("display", "block");
+        });
+        slideBox.animate({
+            left: 0
+        }, time);
+    }
+
+
+//Przypisanie guzikow gora dol
 
     function setUpDown(){
 
@@ -279,7 +325,7 @@ $(function(){
 
     };
 
-    //przypisanie funkcji do guzikow next / prev
+    //przypisanie funkcji do guzikow next, prev
     function setNextPrev(){
 
         nextBut.on("click", function(event){
@@ -299,6 +345,24 @@ $(function(){
         });
 
     };
+
+    //przypisanie przelaczania po jednym slajdzie next, prev
+    function setDisplayBut(){
+
+        nextBut.on('click', function(event) {
+            event.preventDefault();
+            clearInterval(autoLeft);
+            clearInterval(autoRight);
+            slideNextDisplay();
+        });
+
+        prevBut.on('click', function(event) {
+            event.preventDefault();
+            clearInterval(autoLeft);
+            clearInterval(autoRight);
+            slidePrevDisplay();
+        });
+    }
 
     //Ustawienie guzika od menu
     function setMenu(){
@@ -410,19 +474,48 @@ $(function(){
 
     }
 
+    function setDisplayAutoPlay(){
+        autoRightBut.on("click", function(event){
+            event.preventDefault();
+            $(slideBox).stop();
+            clearInterval(autoLeft);
+            clearInterval(autoRight);
+            autoRight = setInterval(function(){
+                slideNextDisplay();
+            }, slideTime);
+        });
+
+        autoLeftBut.on("click", function(event){
+            event.preventDefault();
+            $(slideBox).stop();
+            clearInterval(autoLeft);
+            clearInterval(autoRight);
+            autoLeft = setInterval(function(){
+                slidePrevDisplay();
+            }, slideTime);
+        });
+
+        stopBut.on('click', function(event) {
+            event.preventDefault();
+            clearInterval(autoLeft);
+            clearInterval(autoRight);
+        });
+    }
+
 
 //Slajder w prawo w lewo
     function basicSlider(){
 
         //ustawienie na rozruch
         setNextPrev();
-        setMenu();
         setAutoPlay();
         addClone();
         newSize();
         slideBoxSize();
         slideSet();
+
         textSet();
+        setMenu();
         resizeMenu();
         resizeText();
         resizeFonts();
@@ -447,9 +540,10 @@ $(function(){
         addClone();
         setUpDown();
         setAutoPlayVertical();
-        setMenu();
         setSliderHeight();
         slideSetVertical();
+
+        setMenu();
         textSet();
         resizeMenu();
         resizeText();
@@ -463,9 +557,38 @@ $(function(){
             resizeMenu();
             resizeText();
             resizeFonts();
+            checkBut(1);
         });
     }
-    upDownSlider();
+
+//Po jednym slajdzie
+    function oneSlide(){
+
+        //start
+        index = 0;
+        setSliderHeight();
+        allSlideOff();
+        setDisplayBut();
+        setDisplayAutoPlay();
+
+        textSet();
+        setMenu();
+        resizeMenu();
+        resizeText();
+        resizeFonts();
+
+        //i na pozniej
+        $(window).on("resize", function(event){
+            setSliderHeight();
+            textSet();
+            resizeMenu();
+            resizeText();
+            resizeFonts();
+            checkBut(1);
+        });
+    }
+    oneSlide();
+    //upDownSlider();
     //basicSlider();
 
-});
+//});
